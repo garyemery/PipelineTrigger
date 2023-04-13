@@ -18,11 +18,16 @@ stages:
     steps: 
     - powershell: |
         $changedFiles = $(git diff-tree --no-commit-id --name-only -r $(Build.SourceVersion))
+        echo $changedFiles
+
         $sharedMatches = Select-String -InputObject $changedFiles -Pattern "PipelineTrigger.Shared/" -AllMatches
         $consoleMatches = Select-String -InputObject $changedFiles -Pattern "PipelineTrigger.Console/" -AllMatches
 
         $buildShared = $sharedMatches.Matches.Count -gt 0
         $buildConsole = $consoleMatches.Matches.Count -gt 0
+
+        echo $sharedMatches.Matches.Count
+        echo $consoleMatches.Matches.Count
 
         Write-Host "##vso[task.setvariable variable=BuildShared]$buildShared"
         Write-Host "##vso[task.setvariable variable=BuildConsole]$buildConsole"
