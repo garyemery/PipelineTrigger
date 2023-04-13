@@ -32,8 +32,8 @@ stages:
     displayName: 'Output builds that will run'
     dependsOn: 'Determine_Changes'
     steps: 
-    - script: echo 'BuildShared ${{ variables.BuildShared }}''
-    - script: echo 'BuildConsole ${{ variables.BuildConsole }}''
+    - script: echo 'BuildShared ${{ variables.BuildShared }}'
+    - script: echo 'BuildConsole ${{ variables.BuildConsole }}'
 
   - template: pipeline/build.yml
     parameters:
