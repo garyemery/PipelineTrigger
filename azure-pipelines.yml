@@ -17,8 +17,12 @@ stages:
     displayName: 'Determine jobs to run'
     steps: 
     - powershell: |
-        $changedFiles = $(git diff-tree --no-commit-id --name-only -r $(Build.SourceVersion))
-        echo $changedFiles
+        $changedFiles = $(git diff HEAD HEAD~ --name-only);
+        $temp=$changedFiles -split ' '; 
+        $count=$temp.Length;
+
+        echo 'Changed files: $changedFiles'
+        echo 'Total changed files: $count'
 
         $sharedMatches = Select-String -InputObject $changedFiles -Pattern "PipelineTrigger.Shared" -AllMatches
         $consoleMatches = Select-String -InputObject $changedFiles -Pattern "PipelineTrigger.Console" -AllMatches
