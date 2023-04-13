@@ -28,8 +28,8 @@ stages:
     displayName: 'Output builds that will run'
     dependsOn: 'Determine_Changes'
     steps: 
-    - script: echo 'BuildShared ${{ dependencies.determine_changes.outputs['files_changed.BuildShared'] }}''
-    - script: echo 'BuildConsole ${{ dependencies.determine_changes.outputs['files_changed.BuildConsole'] }}''
+    - script: echo 'BuildShared ${{ Determine_Changes.outputs['files_changed.BuildShared'] }}''
+    - script: echo 'BuildConsole ${{ Determine_Changes.outputs['files_changed.BuildConsole'] }}''
 
   - template: pipeline/build.yml
     parameters:
