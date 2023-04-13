@@ -35,12 +35,12 @@ stages:
     - script: echo 'BuildShared ${{ variables.BuildShared }}'
     - script: echo 'BuildConsole ${{ variables.BuildConsole }}'
 
-  - template: pipeline/build.yml
-    parameters:
-      appName: 'PipelineTriggerConsole'
-      projectPath: 'src/PipelineTrigger/PipelineTrigger.Console'
+  # - template: pipeline/build.yml
+  #   parameters:
+  #     appName: 'PipelineTriggerConsole'
+  #     projectPath: 'src/PipelineTrigger/PipelineTrigger.Console'
 
-  - template: pipeline/build.yml
-    parameters:
-      appName: 'PipelineTriggerShared'
-      projectPath: 'src/PipelineTrigger/PipelineTrigger.Shared'
+  # - template: pipeline/build.yml
+  #   parameters:
+  #     appName: 'PipelineTriggerShared'
+  #     projectPath: 'src/PipelineTrigger/PipelineTrigger.Shared'
