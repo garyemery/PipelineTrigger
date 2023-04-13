@@ -9,6 +9,28 @@ pool:
 stages:
 - stage: Build
   jobs:
+  - job: 'Determine_Changes'
+    displayName: 'Determine jobs to run'
+    steps: 
+    - powershell: |
+        $changedFiles = git diff --name-status HEAD HEAD^
+        $sharedMatches = Select-String -InputObject $changedFiles -Pattern "PipelineTrigger.Shared/" -AllMatches
+        $consoleMatches = Select-String -InputObject $changedFiles -Pattern "PipelineTrigger.Console/" -AllMatches
+
+        $buildShared = $sharedMatches.Matches.Count -gt 0
+        $buildConsole = $consoleMatches.Matches.Count -gt 0
+
+        Write-Host "vso[task.setvariable variable=BuildShared;isOutput=true;]$buildShared"
+        Write-Host "vso[task.setvariable variable=BuildConsole;isOutput=true;]$buildConsole"
+      name: files_changed
+
+  - job: 'Output_Builds'
+    displayName: 'Output builds that will run'
+    dependsOn: 'Determine_Changes'
+    steps: 
+    - script: echo 'BuildShared ${{ dependencies.determine_changes.outputs['files_changed.BuildShared'] }}''
+    - script: echo 'BuildConsole ${{ dependencies.determine_changes.outputs['files_changed.BuildConsole'] }}''
+
   - template: pipeline/build.yml
     parameters:
       appName: 'PipelineTriggerConsole'
