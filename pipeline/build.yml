@@ -1,0 +1,23 @@
+parameters:
+  - name: appName
+    type: string
+  - name: projectPath
+    type: string
+
+jobs:
+- job: 'Build_${{ parameters.appName }}'
+  displayName: 'Build ${{ parameters.appName }}'
+  pool: 
+    vmImage: 'ubuntu-latest'
+  steps:
+  - task: UseDotNet@2
+    displayName: Use .NET 7.0
+    inputs:
+      targetType: 'sdk'
+      version: '7.0.x'
+  
+  - task: DotNetCoreCLI@2
+    displayName: 'Restore'
+    inputs:
+      command: 'restore'
+      projects: '${{ parameters.projectPath }}*/*.csproj'
