@@ -17,7 +17,7 @@ stages:
     displayName: 'Determine jobs to run'
     steps: 
     - powershell: |
-        $changedFiles = $(git diff HEAD HEAD~ --name-only);
+        $changedFiles = $(git diff-tree --no-commit-id --name-only -r $(Build.SourceVersion));
         $temp=$changedFiles -split ' '; 
         $count=$temp.Length;
 
