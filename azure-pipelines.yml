@@ -7,14 +7,14 @@ pool:
   vmImage: ubuntu-latest
 
 stages:
-- stage: Build Console
+- stage: Build_Console
   jobs:
   - template: pipeline/build.yml
     parameters:
       appName: 'PipelineTriggerConsole'
       projectPath: 'src/PipelineTrigger/PipelineTrigger.Console'
 
-- stage: Build Shared
+- stage: Build_Shared
   jobs:
   - template: pipeline/build.yml
     parameters:
