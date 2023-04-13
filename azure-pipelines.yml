@@ -11,12 +11,12 @@ stages:
   jobs:
   - template: pipeline/build.yml
     parameters:
-      appName: 'PipelineTrigger.Console'
+      appName: 'PipelineTriggerConsole'
       projectPath: 'src/PipelineTrigger/PipelineTrigger.Console'
 
 - stage: Build Shared
   jobs:
   - template: pipeline/build.yml
     parameters:
-      appName: 'PipelineTrigger.Shared'
+      appName: 'PipelineTriggerShared'
       projectPath: 'src/PipelineTrigger/PipelineTrigger.Shared'
