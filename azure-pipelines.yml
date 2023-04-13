@@ -21,8 +21,8 @@ stages:
         $temp=$changedFiles -split ' '; 
         $count=$temp.Length;
 
-        echo 'Changed files: $changedFiles'
-        echo 'Total changed files: $count'
+        echo $changedFiles
+        echo $count
 
         $sharedMatches = Select-String -InputObject $changedFiles -Pattern "PipelineTrigger.Shared" -AllMatches
         $consoleMatches = Select-String -InputObject $changedFiles -Pattern "PipelineTrigger.Console" -AllMatches
