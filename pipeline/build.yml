@@ -5,6 +5,7 @@ jobs:
     - checkout: self
       fetchDepth: 0
     - powershell: ./pipeline/Determine-Changes.ps1
+      displayName: 'Check for changes in Communications.Shared'
       name: files_changed
 
   - job: 'Run_For_Shared'
