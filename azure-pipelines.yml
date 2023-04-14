@@ -6,10 +6,6 @@ trigger:
 pool:
   vmImage: ubuntu-latest
 
-variables:
-  BuildShared: false
-  BuildConsole: false
-
 stages:
 - stage: Build
   jobs:
@@ -39,16 +35,19 @@ stages:
         echo $buildShared
         echo $buildConsole
 
-        Write-Host "##vso[task.setvariable variable=BuildConsole]true"
-        Write-Host "##vso[task.setvariable variable=BuildShared]$buildShared"
+        Write-Host "##vso[task.setvariable variable=outBuildConsole;isoutput=true]true"
+        Write-Host "##vso[task.setvariable variable=outBuildShared;isoutput=true]$buildShared"
 
-        echo $(BuildShared)
-        echo $(BuildConsole)
+        echo $(outBuildConsole)
+        echo $(outBuildShared)
       name: files_changed
 
   - job: 'Output_Builds'
     displayName: 'Output builds that will run'
     dependsOn: 'Determine_Changes'
+    variables:
+      BuildShared: $[ dependencies.Determine_Changes.outputs['files_changed.outBuildShared'] ]
+      BuildConsole: $[ dependencies.Determine_Changes.outputs['files_changed.outBuildConsole'] ]
     steps: 
     - script: echo $(BuildShared)
     - script: echo $(BuildConsole)
@@ -57,7 +56,7 @@ stages:
     displayName: 'Shared changed'
     dependsOn: 'Determine_Changes'
     variables:
-      runJob: $[eq(variables['BuildShared'], true)]
+      runJob: $[ dependencies.Determine_Changes.outputs['files_changed.outBuildShared'] ]
     condition: eq(variables.runJob, true)
     steps:
     - script: echo 'Shared has changed'
@@ -66,7 +65,7 @@ stages:
     displayName: 'Console changed'
     dependsOn: 'Determine_Changes'
     variables:
-      runJob: $[eq(variables['BuildConsole'], true)]
+      runJob: $[ dependencies.Determine_Changes.outputs['files_changed.outBuildConsole'] ]
     condition: eq(variables.runJob, true)
     steps:
     - script: echo 'Console has changed'
