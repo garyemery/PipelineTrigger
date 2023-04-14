@@ -39,8 +39,11 @@ stages:
         echo $buildShared
         echo $buildConsole
 
-        Write-Host "##vso[task.setvariable variable=BuildShared]$buildShared"
         Write-Host "##vso[task.setvariable variable=BuildConsole]true"
+        Write-Host "##vso[task.setvariable variable=BuildShared]$buildShared"
+
+        echo $(BuildShared)
+        echo $(BuildConsole)
       name: files_changed
 
   - job: 'Output_Builds'
@@ -53,14 +56,18 @@ stages:
   - job: 'Run_For_Shared'
     displayName: 'Shared changed'
     dependsOn: 'Determine_Changes'
-    condition: eq(variables.BuildShared, true)
+    variables:
+      runJob: $[eq(variables['BuildShared'], true)]
+    condition: eq(variables.runJob, true)
     steps:
     - script: echo 'Shared has changed'
 
   - job: 'Run_For_Console'
     displayName: 'Console changed'
     dependsOn: 'Determine_Changes'
-    condition: eq(variables.BuildConsole, true)
+    variables:
+      runJob: $[eq(variables['BuildConsole'], true)]
+    condition: eq(variables.runJob, true)
     steps:
     - script: echo 'Console has changed'
 
