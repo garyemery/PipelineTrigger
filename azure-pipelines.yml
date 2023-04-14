@@ -36,8 +36,11 @@ stages:
         echo $sharedMatches.Matches.Count
         echo $consoleMatches.Matches.Count
 
-        Write-Host "##vso[task.setvariable variable=BuildShared]$buildShared"
-        Write-Host "##vso[task.setvariable variable=BuildConsole]$buildConsole"
+        echo $buildShared
+        echo $buildConsole
+
+        Write-Host "vso[task.setvariable variable=BuildShared]$buildShared"
+        Write-Host "vso[task.setvariable variable=BuildConsole]$buildConsole"
       name: files_changed
 
   - job: 'Output_Builds'
