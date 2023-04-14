@@ -6,15 +6,14 @@ trigger:
 pool:
   vmImage: ubuntu-latest
 
-variables:
-  BuildShared: false
-  BuildConsole: false
-
 stages:
 - stage: Build
   jobs:
   - job: 'Determine_Changes'
     displayName: 'Determine jobs to run'
+    variables:
+      BuildShared: false
+      BuildConsole: false
     steps: 
     - checkout: self
       fetchDepth: 0
@@ -46,6 +45,9 @@ stages:
   - job: 'Output_Builds'
     displayName: 'Output builds that will run'
     dependsOn: 'Determine_Changes'
+    variables:
+      BuildShared: $[ dependencies.Determine_Changes.variables.BuildShared ]
+      BuildConsole: $[ dependencies.Determine_Changes.variables.BuildConsole ]
     steps: 
     - script: echo 'BuildShared ${{ variables.BuildShared }}'
     - script: echo 'BuildConsole ${{ variables.BuildConsole }}'
