@@ -5,3 +5,4 @@ public class Class1
     // Make change here and in Console
 }
 
+// Only change Shared
