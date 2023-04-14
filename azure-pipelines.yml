@@ -39,16 +39,6 @@ stages:
         Write-Host "##vso[task.setvariable variable=outBuildShared;isoutput=true]$buildShared"
       name: files_changed
 
-  - job: 'Output_Builds'
-    displayName: 'Output builds that will run'
-    dependsOn: 'Determine_Changes'
-    variables:
-      BuildShared: $[ dependencies.Determine_Changes.outputs['files_changed.outBuildShared'] ]
-      BuildConsole: $[ dependencies.Determine_Changes.outputs['files_changed.outBuildConsole'] ]
-    steps: 
-    - script: echo $(BuildShared)
-    - script: echo $(BuildConsole)
-
   - job: 'Run_For_Shared'
     displayName: 'Shared changed'
     dependsOn: 'Determine_Changes'
