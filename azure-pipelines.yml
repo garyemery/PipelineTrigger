@@ -16,8 +16,11 @@ stages:
   - job: 'Determine_Changes'
     displayName: 'Determine jobs to run'
     steps: 
+    - checkout: self
+      fetchDepth: 0
+
     - powershell: |
-        $changedFiles = $(git diff --name-only $(Build.SourceVersion));
+        $changedFiles = $(git diff --name-only HEAD^ HEAD);
         $temp=$changedFiles -split ' '; 
         $count=$temp.Length;
 
