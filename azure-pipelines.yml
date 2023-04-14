@@ -9,12 +9,4 @@ pool:
 stages:
 - stage: Build
   jobs:
-  - job: 'Determine_Changes'
-    displayName: 'Determine jobs to run'
-    steps: 
-    - checkout: self
-      fetchDepth: 0
-    - powershell: ./pipeline/Determine-Changes.ps1
-      name: files_changed
-
   - template: pipeline/build.yml

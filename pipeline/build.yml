@@ -1,4 +1,12 @@
 jobs:
+  - job: 'Determine_Changes'
+    displayName: 'Determine jobs to run'
+    steps: 
+    - checkout: self
+      fetchDepth: 0
+    - powershell: ./pipeline/Determine-Changes.ps1
+      name: files_changed
+
   - job: 'Run_For_Shared'
     displayName: 'Shared changed'
     dependsOn: 'Determine_Changes'
