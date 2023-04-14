@@ -1,23 +1,18 @@
-parameters:
-  - name: appName
-    type: string
-  - name: projectPath
-    type: string
-
 jobs:
-- job: 'Build_${{ parameters.appName }}'
-  displayName: 'Build ${{ parameters.appName }}'
-  pool: 
-    vmImage: 'ubuntu-latest'
-  steps:
-  - task: UseDotNet@2
-    displayName: Use .NET 7.0
-    inputs:
-      targetType: 'sdk'
-      version: '7.0.x'
-  
-  - task: DotNetCoreCLI@2
-    displayName: 'Restore'
-    inputs:
-      command: 'restore'
-      projects: '${{ parameters.projectPath }}*/*.csproj'
+  - job: 'Run_For_Shared'
+    displayName: 'Shared changed'
+    dependsOn: 'Determine_Changes'
+    variables:
+      runJob: $[ dependencies.Determine_Changes.outputs['files_changed.outBuildShared'] ]
+    condition: eq(variables.runJob, true)
+    steps:
+    - script: echo 'Shared has changed'
+
+  - job: 'Run_For_Console'
+    displayName: 'Console build'
+    dependsOn: 'Determine_Changes'
+    variables:
+      runJob: $[ dependencies.Determine_Changes.outputs['files_changed.outBuildConsole'] ]
+    condition: eq(variables.runJob, true)
+    steps:
+    - script: echo 'Console has changed'

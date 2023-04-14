@@ -17,30 +17,4 @@ stages:
     - powershell: ./pipeline/Determine-Changes.ps1
       name: files_changed
 
-  - job: 'Run_For_Shared'
-    displayName: 'Shared changed'
-    dependsOn: 'Determine_Changes'
-    variables:
-      runJob: $[ dependencies.Determine_Changes.outputs['files_changed.outBuildShared'] ]
-    condition: eq(variables.runJob, true)
-    steps:
-    - script: echo 'Shared has changed'
-
-  - job: 'Run_For_Console'
-    displayName: 'Console changed'
-    dependsOn: 'Determine_Changes'
-    variables:
-      runJob: $[ dependencies.Determine_Changes.outputs['files_changed.outBuildConsole'] ]
-    condition: eq(variables.runJob, true)
-    steps:
-    - script: echo 'Console has changed'
-
-  # - template: pipeline/build.yml
-  #   parameters:
-  #     appName: 'PipelineTriggerConsole'
-  #     projectPath: 'src/PipelineTrigger/PipelineTrigger.Console'
-
-  # - template: pipeline/build.yml
-  #   parameters:
-  #     appName: 'PipelineTriggerShared'
-  #     projectPath: 'src/PipelineTrigger/PipelineTrigger.Shared'
+  - template: pipeline/build.yml
