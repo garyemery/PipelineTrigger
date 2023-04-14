@@ -53,14 +53,14 @@ stages:
   - job: 'Run_For_Shared'
     displayName: 'Shared changed'
     dependsOn: 'Determine_Changes'
-    condition: $[eq(variables.BuildShared, true)]
+    condition: eq(variables.BuildShared, true)
     steps:
     - script: echo 'Shared has changed'
 
   - job: 'Run_For_Console'
     displayName: 'Console changed'
     dependsOn: 'Determine_Changes'
-    condition: $[eq(variables.BuildConsole, true)]
+    condition: eq(variables.BuildConsole, true)
     steps:
     - script: echo 'Console has changed'
 
