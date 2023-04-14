@@ -6,14 +6,15 @@ trigger:
 pool:
   vmImage: ubuntu-latest
 
+variables:
+  BuildShared: false
+  BuildConsole: false
+
 stages:
 - stage: Build
   jobs:
   - job: 'Determine_Changes'
     displayName: 'Determine jobs to run'
-    variables:
-      BuildShared: false
-      BuildConsole: false
     steps: 
     - checkout: self
       fetchDepth: 0
@@ -38,19 +39,30 @@ stages:
         echo $buildShared
         echo $buildConsole
 
-        Write-Host "##vso[task.setvariable variable=variables.BuildShared]$buildShared"
-        Write-Host "##vso[task.setvariable variable=variables.BuildConsole]$buildConsole"
+        Write-Host "##vso[task.setvariable variable=BuildShared]$buildShared"
+        Write-Host "##vso[task.setvariable variable=BuildConsole]$buildConsole"
       name: files_changed
 
   - job: 'Output_Builds'
     displayName: 'Output builds that will run'
     dependsOn: 'Determine_Changes'
-    variables:
-      BuildShared: $[ dependencies.Determine_Changes.variables.BuildShared ]
-      BuildConsole: $[ dependencies.Determine_Changes.variables.BuildConsole ]
     steps: 
-    - script: echo 'BuildShared ${{ variables.BuildShared }}'
-    - script: echo 'BuildConsole ${{ variables.BuildConsole }}'
+    - script: echo $(BuildShared)
+    - script: echo $(BuildConsole)
+
+  - job: 'Run_For_Shared'
+    displayName: 'Shared changed'
+    dependsOn: 'Determine_Changes'
+    condition: $[eq(variables.BuildShared, true)]
+    steps:
+    - script: echo 'Shared has changed'
+
+  - job: 'Run_For_Console'
+    displayName: 'Console changed'
+    dependsOn: 'Determine_Changes'
+    condition: $[eq(variables.BuildConsole, true)]
+    steps:
+    - script: echo 'Console has changed'
 
   # - template: pipeline/build.yml
   #   parameters:
