@@ -14,13 +14,15 @@ jobs:
       runJob: $[ dependencies.Determine_Changes.outputs['files_changed.outBuildShared'] ]
     condition: eq(variables.runJob, true)
     steps:
-    - script: echo 'Shared has changed'
+    - task: Bash@3
+      displayName: 'Output state'
+      inputs:
+        targetType: "inline"
+        script: |
+          echo 'Shared has changed'
 
-  - job: 'Run_For_Console'
-    displayName: 'Console build'
-    dependsOn: 'Determine_Changes'
-    variables:
-      runJob: $[ dependencies.Determine_Changes.outputs['files_changed.outBuildConsole'] ]
-    condition: eq(variables.runJob, true)
-    steps:
-    - script: echo 'Console has changed'
+    - task: UseDotNet@2
+      displayName: 'Restore'
+      inputs: 
+        command: 'restore'
+        projects: "src/PipelineTrigger/PipelineTrigger.Shared/PipelineTrigger.Shared.csproj"
