@@ -39,8 +39,8 @@ stages:
         echo $buildShared
         echo $buildConsole
 
-        Write-Host "vso[task.setvariable variable=BuildShared]$buildShared"
-        Write-Host "vso[task.setvariable variable=BuildConsole]$buildConsole"
+        Write-Host "vso[task.setvariable variable=variables.BuildShared]$buildShared"
+        Write-Host "vso[task.setvariable variable=variables.BuildConsole]$buildConsole"
       name: files_changed
 
   - job: 'Output_Builds'
