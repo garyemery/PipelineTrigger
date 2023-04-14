@@ -4,4 +4,4 @@ Console.WriteLine("Hello, World! Another change to CNSL to count");
 // Changes here and Shared
 
 // Branch changes, in console. Plus a bit more, should still build shared.
-// More changes, but no build
+// More changes, but no build - no changes in shared
