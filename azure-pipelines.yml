@@ -37,9 +37,6 @@ stages:
 
         Write-Host "##vso[task.setvariable variable=outBuildConsole;isoutput=true]true"
         Write-Host "##vso[task.setvariable variable=outBuildShared;isoutput=true]$buildShared"
-
-        echo $(outBuildConsole)
-        echo $(outBuildShared)
       name: files_changed
 
   - job: 'Output_Builds'
