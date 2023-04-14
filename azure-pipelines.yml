@@ -35,7 +35,7 @@ stages:
         echo $buildShared
         echo $buildConsole
 
-        Write-Host "##vso[task.setvariable variable=outBuildConsole;isoutput=true]true"
+        Write-Host "##vso[task.setvariable variable=outBuildConsole;isoutput=true]$buildConsole"
         Write-Host "##vso[task.setvariable variable=outBuildShared;isoutput=true]$buildShared"
       name: files_changed
 
